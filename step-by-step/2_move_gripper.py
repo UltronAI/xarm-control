@@ -2,8 +2,8 @@ import os
 import sys
 import time
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
-print(sys.path) # TODO: why to append this path?
+import numpy as np
+# from ..utils import get_transformation
 
 from xarm.wrapper import XArmAPI 
 
@@ -24,8 +24,11 @@ arm.set_state(state=0) # mode 0: sport state
 arm.set_tcp_offset([0,0,172,0,0,0])
 arm.set_tcp_load(0.82,[0,0,48])
 
-time.sleep(10)
-
-print(arm.connected)
+arm.set_mode(0) # mode 0: position control mode, see details in API document
+arm.set_state(state=0) # mode 0: sport state
+code, init_pos = arm.get_position()
+target_pos = np.array(init_pos) + np.array([50, 50, 0, 0, 0, 0])
+arm.set_position(*target_pos)_pos)
 
 arm.disconnect()
+
